@@ -1,17 +1,21 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
+import { StatusBar } from 'expo-status-bar';
 import AuthContext from '../contexts/auth';
 import AppRoutes from './App.route';
 import AuthRoutes from './Auth.route';
-import {StatusBar} from 'react-native';
+import { OfflineBanner, FakeDataBanner } from '../design-system';
+import { USE_FAKE_DATA } from '../config';
 
-const routes = () => {
+const Routes = () => {
   const { signed } = useContext(AuthContext);
   return (
     <>
-    <StatusBar barStyle = "light-content"  backgroundColor = "#5C4DB1" translucent = {true}/>
-    { signed? <AuthRoutes /> : <AppRoutes/>}
+      <StatusBar style="light" translucent />
+      {USE_FAKE_DATA && <FakeDataBanner />}
+      {signed && <OfflineBanner />}
+      {signed ? <AuthRoutes /> : <AppRoutes />}
     </>
-  )
-}
+  );
+};
 
-export default routes;
+export default Routes;

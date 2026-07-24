@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--text-family-code, monospace); font-size: 13px; color: var(--content-color-primary); padding: 16px; }
+  h1 { font-size: 18px; margin-bottom: 8px; font-family: sans-serif; }
+  h2 { font-size: 15px; margin: 20px 0 6px; font-family: sans-serif; border-bottom: 1px solid var(--border-color-default, #ccc); padding-bottom: 4px; }
+  h3 { font-size: 13px; margin: 14px 0 4px; font-family: sans-serif; color: var(--content-color-secondary); }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-right: 6px; }
+  .get { background: #e3f2fd; color: #1565c0; }
+  .post { background: #e8f5e9; color: #2e7d32; }
+  .url { color: var(--content-color-link, #0066cc); font-size: 12px; }
+  .block { background: var(--background-color-secondary, #f5f5f5); border-radius: 6px; padding: 10px 12px; margin: 6px 0; overflow-x: auto; white-space: pre; font-size: 11px; max-height: 200px; overflow-y: auto; }
+  .tag { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; margin-right: 4px; }
+  .s200 { background: #e8f5e9; color: #2e7d32; }
+  .s401 { background: #fff3e0; color: #e65100; }
+  .s403 { background: #fce4ec; color: #c62828; }
+  .s404 { background: #fce4ec; color: #c62828; }
+  .copy-btn { float: right; padding: 4px 10px; font-size: 11px; cursor: pointer; border: 1px solid var(--border-color-default, #ccc); border-radius: 4px; background: var(--background-color-secondary); color: var(--content-color-primary); }
+  .copy-btn:hover { background: var(--background-color-tertiary); }
+  .section { margin-bottom: 6px; }
+  .label { font-weight: bold; font-size: 11px; color: var(--content-color-secondary); margin-bottom: 2px; font-family: sans-serif; }
+  .scroll-wrap { max-height: calc(100vh - 60px); overflow-y: auto; padding-right: 4px; }
+  .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .info { font-size: 12px; color: var(--content-color-secondary); font-family: sans-serif; }
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <div>
+    <h1>SIGEUP API</h1>
+    <div class="info">Base URL: <span class="url">https://api.sigeup.up.ac.mz/v1</span> &nbsp;|&nbsp; 15 endpoints &nbsp;|&nbsp; 28 exemplos</div>
+  </div>
+  <button class="copy-btn" onclick="copyAll()">📋 Copiar tudo</button>
+</div>
+
+<div class="scroll-wrap" id="content">
+
+<h2>🔐 Autenticação</h2>
+<p style="font-size:12px;font-family:sans-serif;margin:4px 0 8px">Todos os endpoints (exceto Login) requerem os headers: <code>Authorization: Bearer {token}</code>, <code>S-AppId: {app_id}</code>, <code>Accept: application/json</code></p>
+
+<!-- LOGIN -->
+<h2>1. Login</h2>
+<div><span class="badge post">POST</span><span class="url">/auth/login</span></div>
+<div class="section" style="margin-top:6px">
+  <div class="label">REQUEST BODY (form-data)</div>
+  <div class="block">username: 01.2650.2016
+password: 01.2650.2016</div>
+</div>
+<div class="section">
+  <span class="tag s200">200 OK</span> Login com sucesso
+  <div class="block">{"access_token":"eyJ0eXAiOiJKV1Qi...","token_type":"Bearer","expires_at":"2019-04-18 11:47:32","user":{"_id":"01.2650.2016","full_name":"BENJAMIM ISRAEL SAMBO","course":{"_id":"MElPA0JVZoynp1yR6gvq6jwO4GaQb2","name":"Gestão dos Recursos Humanos","faculty_id":"ESCOG"},"regime":{"_id":"9wmWAPVqeY4yax5bLoOMbp3XDR2Z85","name":"Pós-Laboral"},"quick_links":[]}}</div>
+  <span class="tag s404">404 Not Found</span> Username/Password incorrectos
+  <div class="block">{"message":"No query results for model [App\\User]."}</div>
+</div>
+
+<!-- LOGOUT -->
+<h2>2. LogOut</h2>
+<div><span class="badge post">POST</span><span class="url">/auth/logout</span></div>
+<div class="section" style="margin-top:6px">
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"message":"Successfully logged out"}</div>
+  <span class="tag s401">401 Unauthorized</span> Token inválido
+  <div class="block">{"message":"Unauthenticated."}</div>
+</div>
+
+<!-- DOCUMENTOS ÚTEIS -->
+<h2>3. Lista de Documentos Úteis</h2>
+<div><span class="badge get">GET</span><span class="url">/informationdocuments</span></div>
+<div class="section" style="margin-top:6px">
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":[{"_id":"NowOazj6QvDl41wJLeZVGXM7q83RrK","name":"dassad","mime":"application/pdf","extension":"pdf","size":"242.11 KB","url":null,"description":"asdasd"},{"_id":"PpD02nlK8EB4ago0xAoObG3MeyYkV6","name":"alexandre antonio","mime":"application/pdf","extension":"pdf","size":"1.72 MB","url":null,"description":"Pauta Síntese Geral"}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":2}}</div>
+</div>
+
+<!-- ANOS LECTIVOS -->
+<h2>4. Lista de Anos Lectivos</h2>
+<div><span class="badge get">GET</span><span class="url">/periods?order=id&amp;filter=enrollments</span></div>
+<div class="section" style="margin-top:6px">
+  <div class="label">QUERY PARAMS</div>
+  <div class="block">order=id
+filter=enrollments  (opcional — filtra só anos com inscrições)</div>
+  <span class="tag s200">200 OK</span> Todos os anos
+  <div class="block">{"data":[{"_id":"8avlo9G0yWVexY88vgrNBj2m5dDn7K","year":2010},{"_id":"QmVna0MjXveZ1ZXX0x46PopKrJq2WB","year":2011},{"_id":"4dQoEPaAVNl0LpEEM1ywkKYRXe2Gzr","year":2016},{"_id":"dlRjrPwZkqY2gakkbLG8MV6A4yJ7ap","year":2017},{"_id":"n8rjl4MOz7NYgDwwW16eoGBb3VEkwW","year":2018}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":9}}</div>
+  <span class="tag s200">200 OK</span> Filtrado por inscrições
+  <div class="block">{"data":[{"_id":"4dQoEPaAVNl0LpEEM1ywkKYRXe2Gzr","year":2016}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":1}}</div>
+</div>
+
+<!-- INSCRIÇÕES -->
+<h2>5. Lista de Inscrições</h2>
+<div><span class="badge get">GET</span><span class="url">/enrollments</span></div>
+<div class="section" style="margin-top:6px">
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":[{"_id":"y9r85doZaEJGL2dV2vgn6kMX2lRAvj","period":2016,"semester":1,"grade":1,"payment_reference":"00886570109","payment_entity":"88015","online":true,"confirmed":true}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":1}}</div>
+</div>
+
+<!-- INSCRIÇÕES POR ANO -->
+<h2>6. Lista de Inscrições por Ano Lectivo</h2>
+<div><span class="badge get">GET</span><span class="url">/periods/{period_id}/enrollments</span></div>
+<div class="section" style="margin-top:6px">
+  <div class="label">PATH VARIABLE</div>
+  <div class="block">period_id — ID do ano lectivo</div>
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":[{"_id":"y9r85doZaEJGL2dV2vgn6kMX2lRAvj","period":2016,"semester":1,"grade":1,"payment_reference":"00886570109","payment_entity":"88015","online":true,"confirmed":true}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":1}}</div>
+</div>
+
+<!-- DISCIPLINAS DA INSCRIÇÃO -->
+<h2>7. Lista de Disciplinas da Inscrição</h2>
+<div><span class="badge get">GET</span><span class="url">/enrollments/{enrollment_id}/grades</span></div>
+<div class="section" style="margin-top:6px">
+  <div class="label">PATH VARIABLE</div>
+  <div class="block">enrollment_id — ID da inscrição</div>
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":[{"_id":"6r97OeQAB8wZx6DllV1R4ln3YJjEvG","discipline":{"_id":"GRH14","name":"Métodos de Estudo e Investigação Científica"},"grade":1,"test1":"9.0","frequency_avg":"6","frequency_result":"Reprovado","final_result":"Reprovado"},{"_id":"6aNqR43nKyl5LOp88o1GjX9MQOkePA","discipline":{"_id":"UP_XX_108_A_04","name":"Introdução à Economia"},"grade":1,"test1":"9","test2":"10","work1":"10","frequency_avg":"10","frequency_result":"Admitido","final_result":"Reprovado"}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":6}}</div>
+  <span class="tag s403">403 Forbidden</span> Estudante com dívida
+  <div class="block">{"message":"Estudante com dívida de 7560 MT no sistema!"}</div>
+  <span class="tag s403">403 Forbidden</span> Avaliação docente incompleta
+  <div class="block">{"message":"Avaliação do corpo docente não está completa. Vá para httsp://www.sigeup.up.ac.mz para a completar."}</div>
+</div>
+
+<!-- PROPINAS DA INSCRIÇÃO -->
+<h2>8. Lista de Propinas da Inscrição</h2>
+<div><span class="badge get">GET</span><span class="url">/enrollments/{enrollment_id}/payments</span></div>
+<div class="section" style="margin-top:6px">
+  <div class="label">PATH VARIABLE</div>
+  <div class="block">enrollment_id — ID da inscrição</div>
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":[{"_id":"8XrRP9zVWbOqLRa6jvx6QYlMJGDB0o","description":"1ª Multa da Propina Maio de 2016","debit_date":"2016-05-11","debit_ammount":280,"debit_currency":"MZN","payment_date":null,"credit_ammount":0,"credit_currency":"MZN","payment_entity":"88001","payment_reference":"00886575135","paid":false},{"_id":"N5wEJMpXyrYVLzDYPXgW93le8GovPj","description":"Propina Maio de 2016","debit_date":"2016-05-10","debit_ammount":2805,"paid":false}],"meta":{"current_page":1,"last_page":2,"per_page":15,"total":20}}</div>
+</div>
+
+<!-- DISCIPLINAS POR ANO -->
+<h2>9. Lista de Disciplinas Inscritas por Ano Lectivo</h2>
+<div><span class="badge get">GET</span><span class="url">/periods/{period_id}/grades</span></div>
+<div class="section" style="margin-top:6px">
+  <div class="label">PATH VARIABLE</div>
+  <div class="block">period_id — ID do ano lectivo</div>
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":[{"_id":"6aNqR43nKyl5LOp88o1GjX9MQOkePA","discipline":{"_id":"UP_XX_108_A_04","name":"Introdução à Economia"},"grade":1,"test1":"9","test2":"10","work1":"10","frequency_avg":"10","frequency_result":"Admitido","final_result":"Reprovado"}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":6}}</div>
+  <span class="tag s403">403 Forbidden</span> Dívida / Avaliação incompleta
+  <div class="block">{"message":"Estudante com dívida de 7560 MT no sistema!"}</div>
+</div>
+
+<!-- PROPINAS POR ANO -->
+<h2>10. Lista de Propinas por Ano Lectivo</h2>
+<div><span class="badge get">GET</span><span class="url">/periods/{period_id}/payments</span></div>
+<div class="section" style="margin-top:6px">
+  <div class="label">PATH VARIABLE + QUERY PARAMS</div>
+  <div class="block">period_id — ID do ano lectivo
+filter=paid | unpaid  (opcional)</div>
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":[{"_id":"5ZWdm49y6KOBx4nq5D1rj8nRQG3VJa","description":"Propina Março 2016","debit_date":"2016-03-10","debit_ammount":2805,"debit_currency":"MZN","payment_date":null,"credit_ammount":0,"credit_currency":"MZN","payment_entity":"88001","payment_reference":"00886570313","paid":false}],"meta":{"current_page":1,"last_page":2,"per_page":15,"total":20}}</div>
+</div>
+
+<!-- TODAS DISCIPLINAS -->
+<h2>11. Lista de Todas Disciplinas Inscritas</h2>
+<div><span class="badge get">GET</span><span class="url">/grades</span></div>
+<div class="section" style="margin-top:6px">
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":[{"_id":"6aNqR43nKyl5LOp88o1GjX9MQOkePA","discipline":{"_id":"UP_XX_108_A_04","name":"Introdução à Economia"},"grade":1,"test1":"9","test2":"10","work1":"10","frequency_avg":"10","frequency_result":"Admitido","final_result":"Reprovado"},{"_id":"6r97OeQAB8wZx6DllV1R4ln3YJjEvG","discipline":{"_id":"GRH14","name":"Métodos de Estudo e Investigação Científica"},"grade":1,"test1":"9.0","frequency_avg":"6","frequency_result":"Reprovado","final_result":"Reprovado"}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":6}}</div>
+  <span class="tag s403">403 Forbidden</span>
+  <div class="block">{"message":"Estudante com dívida de 7560 MT no sistema!"}</div>
+</div>
+
+<!-- PLANOS CURRICULARES -->
+<h2>12. Lista de Disciplinas Curriculares</h2>
+<div><span class="badge get">GET</span><span class="url">/curricularplans?include=curriculum,discipline,course&amp;order=grade,semester&amp;direction=asc&amp;page=1</span></div>
+<div class="section" style="margin-top:6px">
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":[{"_id":"kWaJEonqQ5wGLlYMA1K9AeBZ2dXbV7","grade":1,"semester":1,"credits":"6.00","discipline":{"_id":"UP_XX_108_A_04","name":"Introdução à Economia"},"course":{"_id":"MElPA0JVZoynp1yR6gvq6jwO4GaQb2","name":"Gestão dos Recursos Humanos"},"curriculum":{"_id":"v7QjGa3AZrEDk1e6gwbKMdmlon409J","name":"PLANO B"}}],"meta":{"current_page":1,"last_page":3,"per_page":15,"total":39}}</div>
+</div>
+
+<!-- FACTURAS -->
+<h2>13. Lista de Facturas</h2>
+<div><span class="badge get">GET</span><span class="url">/invoices?filter=paid|unpaid</span></div>
+<div class="section" style="margin-top:6px">
+  <div class="label">QUERY PARAMS</div>
+  <div class="block">filter=paid | unpaid  (opcional)</div>
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":[{"_id":"R9o4O75WqQKbyLmz1308mePawljGrV","due_date":"2019-09-14","ammount":100,"ammount_currency":"MZN","payment_entity":"88036","payment_reference":"00886571974","paid":false,"details":[{"_id":"05ZWdm49y6KOBx4ALrj8nRQG3VJaDo","ammount":"100.00","ammount_currency":"MZN","description":"2ª Via do Cartão de Estudante"}]}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":1}}</div>
+</div>
+
+<!-- DETALHES FACTURA -->
+<h2>14. Lista de Detalhes da Factura</h2>
+<div><span class="badge get">GET</span><span class="url">/invoices/{invoice_id}/details</span></div>
+<div class="section" style="margin-top:6px">
+  <div class="label">PATH VARIABLE</div>
+  <div class="block">invoice_id — ID da factura</div>
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":[{"_id":"05ZWdm49y6KOBx4ALrj8nRQG3VJaDo","ammount":"100.00","ammount_currency":"MZN","description":"2ª Via do Cartão de Estudante"}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":1}}</div>
+</div>
+
+<!-- SALDO -->
+<h2>15. Saldo Actual</h2>
+<div><span class="badge get">GET</span><span class="url">/payments/balance</span></div>
+<div class="section" style="margin-top:6px">
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":{"balance":-17525}}</div>
+</div>
+
+<!-- TODAS PROPINAS -->
+<h2>16. Lista de Todas Propinas</h2>
+<div><span class="badge get">GET</span><span class="url">/payments</span></div>
+<div class="section" style="margin-top:6px">
+  <span class="tag s200">200 OK</span>
+  <div class="block">{"data":[{"_id":"5ZWdm49y6KOBx4nq5D1rj8nRQG3VJa","description":"Propina Março 2016","debit_date":"2016-03-10","debit_ammount":2805,"debit_currency":"MZN","payment_date":null,"credit_ammount":0,"credit_currency":"MZN","payment_entity":"88001","payment_reference":"00886570313","paid":false}],"meta":{"current_page":1,"last_page":2,"per_page":15,"total":20}}</div>
+</div>
+
+</div>
+
+<script>
+function copyAll() {
+  const text = `# SIGEUP API Documentation
+
+**Base URL:** https://api.sigeup.up.ac.mz/v1
+
+## Autenticação
+Todos os endpoints (exceto Login) requerem:
+- Authorization: Bearer {access_token}
+- S-AppId: {app_id}
+- Accept: application/json
+- Content-Type: application/json
+
+---
+
+## 1. Login
+**POST** /auth/login
+**Body (form-data):** username, password
+
+### 200 OK
+\`\`\`json
+{"access_token":"eyJ0eXAiOiJKV1Qi...","token_type":"Bearer","expires_at":"2019-04-18 11:47:32","user":{"_id":"01.2650.2016","full_name":"BENJAMIM ISRAEL SAMBO","course":{"_id":"MElPA0JVZoynp1yR6gvq6jwO4GaQb2","name":"Gestão dos Recursos Humanos","faculty_id":"ESCOG"},"regime":{"_id":"9wmWAPVqeY4yax5bLoOMbp3XDR2Z85","name":"Pós-Laboral"},"quick_links":[]}}
+\`\`\`
+### 404 Not Found — Username/Password incorrectos
+\`\`\`json
+{"message":"No query results for model [App\\\\User]."}
+\`\`\`
+
+---
+
+## 2. LogOut
+**POST** /auth/logout
+
+### 200 OK
+\`\`\`json
+{"message":"Successfully logged out"}
+\`\`\`
+### 401 Unauthorized
+\`\`\`json
+{"message":"Unauthenticated."}
+\`\`\`
+
+---
+
+## 3. Lista de Documentos Úteis
+**GET** /informationdocuments
+
+### 200 OK
+\`\`\`json
+{"data":[{"_id":"NowOazj6QvDl41wJLeZVGXM7q83RrK","name":"dassad","mime":"application/pdf","extension":"pdf","size":"242.11 KB","url":null,"description":"asdasd"},{"_id":"PpD02nlK8EB4ago0xAoObG3MeyYkV6","name":"alexandre antonio","mime":"application/pdf","extension":"pdf","size":"1.72 MB","url":null,"description":"Pauta Síntese Geral"}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":2}}
+\`\`\`
+
+---
+
+## 4. Lista de Anos Lectivos
+**GET** /periods?order=id&filter=enrollments
+**Query Params:** order=id, filter=enrollments (opcional)
+
+### 200 OK — Todos
+\`\`\`json
+{"data":[{"_id":"8avlo9G0yWVexY88vgrNBj2m5dDn7K","year":2010},{"_id":"QmVna0MjXveZ1ZXX0x46PopKrJq2WB","year":2011},{"_id":"4dQoEPaAVNl0LpEEM1ywkKYRXe2Gzr","year":2016},{"_id":"dlRjrPwZkqY2gakkbLG8MV6A4yJ7ap","year":2017},{"_id":"n8rjl4MOz7NYgDwwW16eoGBb3VEkwW","year":2018}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":9}}
+\`\`\`
+### 200 OK — Filtrado por inscrições
+\`\`\`json
+{"data":[{"_id":"4dQoEPaAVNl0LpEEM1ywkKYRXe2Gzr","year":2016}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":1}}
+\`\`\`
+
+---
+
+## 5. Lista de Inscrições
+**GET** /enrollments
+
+### 200 OK
+\`\`\`json
+{"data":[{"_id":"y9r85doZaEJGL2dV2vgn6kMX2lRAvj","period":2016,"semester":1,"grade":1,"payment_reference":"00886570109","payment_entity":"88015","online":true,"confirmed":true}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":1}}
+\`\`\`
+
+---
+
+## 6. Lista de Inscrições por Ano Lectivo
+**GET** /periods/{period_id}/enrollments
+**Path:** period_id — ID do ano lectivo
+
+### 200 OK
+\`\`\`json
+{"data":[{"_id":"y9r85doZaEJGL2dV2vgn6kMX2lRAvj","period":2016,"semester":1,"grade":1,"payment_reference":"00886570109","payment_entity":"88015","online":true,"confirmed":true}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":1}}
+\`\`\`
+
+---
+
+## 7. Lista de Disciplinas da Inscrição
+**GET** /enrollments/{enrollment_id}/grades
+**Path:** enrollment_id — ID da inscrição
+
+### 200 OK
+\`\`\`json
+{"data":[{"_id":"6r97OeQAB8wZx6DllV1R4ln3YJjEvG","discipline":{"_id":"GRH14","name":"Métodos de Estudo e Investigação Científica"},"grade":1,"test1":"9.0","frequency_avg":"6","frequency_result":"Reprovado","final_result":"Reprovado"},{"_id":"6aNqR43nKyl5LOp88o1GjX9MQOkePA","discipline":{"_id":"UP_XX_108_A_04","name":"Introdução à Economia"},"grade":1,"test1":"9","test2":"10","work1":"10","frequency_avg":"10","frequency_result":"Admitido","final_result":"Reprovado"}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":6}}
+\`\`\`
+### 403 Forbidden — Dívida
+\`\`\`json
+{"message":"Estudante com dívida de 7560 MT no sistema!"}
+\`\`\`
+### 403 Forbidden — Avaliação docente incompleta
+\`\`\`json
+{"message":"Avaliação do corpo docente não está completa. Vá para httsp://www.sigeup.up.ac.mz para a completar."}
+\`\`\`
+
+---
+
+## 8. Lista de Propinas da Inscrição
+**GET** /enrollments/{enrollment_id}/payments
+**Path:** enrollment_id — ID da inscrição
+
+### 200 OK
+\`\`\`json
+{"data":[{"_id":"8XrRP9zVWbOqLRa6jvx6QYlMJGDB0o","description":"1ª Multa da Propina Maio de 2016","debit_date":"2016-05-11","debit_ammount":280,"debit_currency":"MZN","payment_date":null,"credit_ammount":0,"credit_currency":"MZN","payment_entity":"88001","payment_reference":"00886575135","paid":false},{"_id":"N5wEJMpXyrYVLzDYPXgW93le8GovPj","description":"Propina Maio de 2016","debit_date":"2016-05-10","debit_ammount":2805,"paid":false}],"meta":{"current_page":1,"last_page":2,"per_page":15,"total":20}}
+\`\`\`
+
+---
+
+## 9. Lista de Disciplinas Inscritas por Ano Lectivo
+**GET** /periods/{period_id}/grades
+**Path:** period_id — ID do ano lectivo
+
+### 200 OK
+\`\`\`json
+{"data":[{"_id":"6aNqR43nKyl5LOp88o1GjX9MQOkePA","discipline":{"_id":"UP_XX_108_A_04","name":"Introdução à Economia"},"grade":1,"test1":"9","test2":"10","work1":"10","frequency_avg":"10","frequency_result":"Admitido","final_result":"Reprovado"}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":6}}
+\`\`\`
+### 403 Forbidden
+\`\`\`json
+{"message":"Estudante com dívida de 7560 MT no sistema!"}
+\`\`\`
+
+---
+
+## 10. Lista de Propinas por Ano Lectivo
+**GET** /periods/{period_id}/payments?filter=paid|unpaid
+**Path:** period_id | **Query:** filter=paid|unpaid (opcional)
+
+### 200 OK
+\`\`\`json
+{"data":[{"_id":"5ZWdm49y6KOBx4nq5D1rj8nRQG3VJa","description":"Propina Março 2016","debit_date":"2016-03-10","debit_ammount":2805,"debit_currency":"MZN","payment_date":null,"credit_ammount":0,"credit_currency":"MZN","payment_entity":"88001","payment_reference":"00886570313","paid":false}],"meta":{"current_page":1,"last_page":2,"per_page":15,"total":20}}
+\`\`\`
+
+---
+
+## 11. Lista de Todas Disciplinas Inscritas
+**GET** /grades
+
+### 200 OK
+\`\`\`json
+{"data":[{"_id":"6aNqR43nKyl5LOp88o1GjX9MQOkePA","discipline":{"_id":"UP_XX_108_A_04","name":"Introdução à Economia"},"grade":1,"test1":"9","test2":"10","work1":"10","frequency_avg":"10","frequency_result":"Admitido","final_result":"Reprovado"}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":6}}
+\`\`\`
+
+---
+
+## 12. Lista de Disciplinas Curriculares
+**GET** /curricularplans?include=curriculum,discipline,course&order=grade,semester&direction=asc&page=1
+
+### 200 OK
+\`\`\`json
+{"data":[{"_id":"kWaJEonqQ5wGLlYMA1K9AeBZ2dXbV7","grade":1,"semester":1,"credits":"6.00","discipline":{"_id":"UP_XX_108_A_04","name":"Introdução à Economia"},"course":{"_id":"MElPA0JVZoynp1yR6gvq6jwO4GaQb2","name":"Gestão dos Recursos Humanos"},"curriculum":{"_id":"v7QjGa3AZrEDk1e6gwbKMdmlon409J","name":"PLANO B"}}],"meta":{"current_page":1,"last_page":3,"per_page":15,"total":39}}
+\`\`\`
+
+---
+
+## 13. Lista de Facturas
+**GET** /invoices?filter=paid|unpaid
+**Query:** filter=paid|unpaid (opcional)
+
+### 200 OK
+\`\`\`json
+{"data":[{"_id":"R9o4O75WqQKbyLmz1308mePawljGrV","due_date":"2019-09-14","ammount":100,"ammount_currency":"MZN","payment_entity":"88036","payment_reference":"00886571974","paid":false,"details":[{"_id":"05ZWdm49y6KOBx4ALrj8nRQG3VJaDo","ammount":"100.00","ammount_currency":"MZN","description":"2ª Via do Cartão de Estudante"}]}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":1}}
+\`\`\`
+
+---
+
+## 14. Lista de Detalhes da Factura
+**GET** /invoices/{invoice_id}/details
+**Path:** invoice_id — ID da factura
+
+### 200 OK
+\`\`\`json
+{"data":[{"_id":"05ZWdm49y6KOBx4ALrj8nRQG3VJaDo","ammount":"100.00","ammount_currency":"MZN","description":"2ª Via do Cartão de Estudante"}],"meta":{"current_page":1,"last_page":1,"per_page":15,"total":1}}
+\`\`\`
+
+---
+
+## 15. Saldo Actual
+**GET** /payments/balance
+
+### 200 OK
+\`\`\`json
+{"data":{"balance":-17525}}
+\`\`\`
+
+---
+
+## 16. Lista de Todas Propinas
+**GET** /payments
+
+### 200 OK
+\`\`\`json
+{"data":[{"_id":"5ZWdm49y6KOBx4nq5D1rj8nRQG3VJa","description":"Propina Março 2016","debit_date":"2016-03-10","debit_ammount":2805,"debit_currency":"MZN","payment_date":null,"credit_ammount":0,"credit_currency":"MZN","payment_entity":"88001","payment_reference":"00886570313","paid":false}],"meta":{"current_page":1,"last_page":2,"per_page":15,"total":20}}
+\`\`\``;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copiado!';
+    setTimeout(() => btn.textContent = '📋 Copiar tudo', 2000);
+  }).catch(() => {
+    alert('Não foi possível copiar automaticamente. Selecciona o texto manualmente.');
+  });
+}
+</script>
+</body>
+</html>

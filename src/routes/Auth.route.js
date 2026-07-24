@@ -1,164 +1,67 @@
-import React, {useContext} from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialIcons } from '@expo/vector-icons';
-import { navigationRef } from '../routes/RootNavigation';
+import { navigationRef } from './RootNavigation';
+import { colors, TabBar } from '../design-system';
 
-//Pages
-import  Subscription from '../pages/Subscription';
 import Home from '../pages/Home';
-import FrequencyNotes from '../pages/FrequencyNotes';
-import Notes from '../pages/Notes';
-import Setting from '../pages/Setting';
+import Notas from '../pages/Notas';
+import NotasDetalhe from '../pages/NotasDetalhe';
+import Financeiro from '../pages/Financeiro';
+import FacturaDetalhe from '../pages/FacturaDetalhe';
+import Mais from '../pages/Mais';
+import Documentos from '../pages/Documentos';
+import PlanoCurricular from '../pages/PlanoCurricular';
+import Perfil from '../pages/Perfil';
+import Definicoes from '../pages/Definicoes';
 import NavigatingOut from '../pages/NavigatingOut';
 
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
-//Navigator
-const Stack = createStackNavigator();
-const TabNav = createBottomTabNavigator();
-
-import AuthContext from '../contexts/auth';
-import {speckNormal} from '../helpers';
-
-function Tabs() { 
-  const {talk} = useContext(AuthContext); 
+function Tabs() {
   return (
-    <TabNav.Navigator
-      /*tabBarOptions = {
-        {
-           activeTintColor: '#5C4DB1',
-           inactiveTintColor: '#707070',
-           labelStyle: {
-             fontSize: 14,
-             marginBottom: 2
-           }
-        }
-      },*/
-      screenOptions={
-          {
-             headerStyle: {
-               backgroundColor: '#5C4DB1',
-               borderBottomColor: 'transparent',
-              
-            },
-            headerTitleStyle: { color: '#fff' },
-             tabBarLabelStyle: {
-              fontSize: 14, 
-              marginBottom: 2
-            }, 
-            tabBarInactiveTintColor: '#707070',
-            tabBarActiveTintColor: '#5C4DB1'
-           }
-      }
+    <Tab.Navigator
+      screenOptions={{ headerShown: false }}
+      tabBar={(props) => <TabBar {...props} />}
     >
-      
-      <TabNav.Screen name="Home" component={Home} 
-      
-        options = {
-          {
-            tabBarIcon: ({ focused, color, size }) => {
-             return(
-                focused ? <MaterialIcons  name={'home'} color={color} size={24}/> : <MaterialIcons name={'home'} color={color} size={24}/> 
-             );
-            },
-            
-          }
-        }
-        listeners = {{
-          tabPress: e => {
-            speckNormal('tela inicial', talk);
-            //e.preventDefault();
-          }
-        }}
-      />
-      <TabNav.Screen name="Notas" component={FrequencyNotes} 
-        options = {
-          {
-            tabBarIcon: ({ focused, color, size }) => {
-             return(
-                focused ? <MaterialIcons  name={'assessment'} color={color} size={24}/> : <MaterialIcons name={'assessment'} color={color} size={24}/>
-             );
-            }
-          }
-        }
-        listeners = {{
-          tabPress: e => {
-            speckNormal('Tela de Notas de frequencia', talk);
-            //e.preventDefault();
-          }
-        }}
-      />
-      <TabNav.Screen name="Inscrições" component={Subscription} 
-        options = {
-          {
-            tabBarIcon: ({ focused, color}) => {
-             return(
-                focused ? <MaterialIcons  name={'assignment-turned-in'} color={color} size={24}/> : <MaterialIcons name={'assignment-turned-in'} color={color} size={24}/>
-             );
-            }, 
-          }
-        }
-        listeners = {{
-          tabPress: e => {
-            speckNormal('tela de Inscrições', talk);
-            //e.preventDefault();
-          }
-        }}
-      />
-        <TabNav.Screen name="Definições" component={Setting} 
-        options = {
-          {
-            tabBarIcon: ({ focused, color}) => {
-             return(
-                focused ? <MaterialIcons  name={'settings'} color={color} size={24}/> : <MaterialIcons name={'settings'} color={color} size={24}/>
-             );
-            }, 
-          }
-        }
-        listeners = {{
-          tabPress: e => {
-            speckNormal('tela de Definições', talk);
-            //e.preventDefault();
-          }
-        }}
-      />
-
-    </TabNav.Navigator>
+      <Tab.Screen name="Início" component={Home} />
+      <Tab.Screen name="Notas" component={Notas} />
+      <Tab.Screen name="Financeiro" component={Financeiro} />
+      <Tab.Screen name="Mais" component={Mais} />
+    </Tab.Navigator>
   );
 }
 
-function App() {
-
-  const {exameNote, exameView, talk} = useContext(AuthContext);
+export default function MainRoutes() {
   return (
-    <NavigationContainer  ref={navigationRef}>
-      <Stack.Navigator>
-        <Stack.Screen name="Tabs" component={Tabs}  options={{headerShown:false}}  />
-        <Stack.Screen 
-        name="Notes" 
-        component={Notes}
-        options={
-          ({ route }) => ({
-             title: `${route.params.semester}º Semestre de ${route.params.period}`,
-             headerRight: () => (
-            exameNote ? (<TouchableOpacity onPress={() => {exameView(false); speckNormal(`Notas do ${route.params.semester}º Semestre de ${route.params.period}`, talk); } } style ={{borderRadius: 6,backgroundColor: '#5C4DB1', padding: 4, marginRight: 15}}>
-              <Text style={{color: '#fff',  fontWeight: 'bold'}}>Notas</Text>
-            </TouchableOpacity>) :( <TouchableOpacity onPress={() => {exameView(true); speckNormal(`Exames do ${route.params.semester}º Semestre de ${route.params.period}`, talk);} } style ={{borderRadius: 6,backgroundColor: '#5C4DB1', padding: 4, marginRight: 15}}>
-              <Text style={{color: '#fff',  fontWeight: 'bold'}}>Exames</Text>
-            </TouchableOpacity>)
-             ),
-         })
-          
-        }      
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: colors.surface },
+          headerTintColor: colors.primaryDark,
+          headerTitleStyle: { color: colors.textPrimary, fontWeight: '700' },
+          headerShadowVisible: false,
+        }}
+      >
+        <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="NotasDetalhe"
+          component={NotasDetalhe}
+          options={({ route }) => ({
+            title: route.params.all
+              ? 'Todas as disciplinas'
+              : `${route.params.semester}º Semestre de ${route.params.period}`,
+          })}
         />
-        <Stack.Screen name="Setting" component={Setting} options={{title: 'Definições'}}/>
-        <Stack.Screen name="NavigatingOut" component={NavigatingOut} options={{title: 'Plataforma'}}/>
+        <Stack.Screen name="FacturaDetalhe" component={FacturaDetalhe} options={{ title: 'Detalhes da factura' }} />
+        <Stack.Screen name="Documentos" component={Documentos} options={{ title: 'Documentos úteis' }} />
+        <Stack.Screen name="PlanoCurricular" component={PlanoCurricular} options={{ title: 'Plano curricular' }} />
+        <Stack.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} />
+        <Stack.Screen name="Definicoes" component={Definicoes} options={{ title: 'Definições' }} />
+        <Stack.Screen name="NavigatingOut" component={NavigatingOut} options={{ title: 'Plataforma' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-export default  App;
-
