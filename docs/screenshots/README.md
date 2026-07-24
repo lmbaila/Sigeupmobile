@@ -1,19 +1,7 @@
 # Capturas de ecrã
 
-Coloca aqui os `.png` das capturas de ecrã da aplicação, com estes nomes exactos, para
-aparecerem automaticamente no `README.md` principal:
+- `new-version/` — capturas da versão actual da app (redesenho com identidade visual da UP, dados de desenvolvimento fake).
+- `old-version/` — capturas da versão anterior, antes da reconstrução, para comparação.
 
-- `inicio.png`
-- `notas.png`
-- `financeiro.png`
-- `mais.png`
-- `plano-curricular.png`
-- `perfil.png`
-- `documentos.png`
-
-Ecrãs opcionais adicionais (usa o mesmo padrão de nome em minúsculas e sem acentos):
-
-- `login.png`
-- `notas-detalhe.png`
-- `factura-detalhe.png`
-- `definicoes.png`
+Para adicionar mais capturas, guarda o `.png`/`.jpg` na pasta correspondente e referencia-o
+no `README.md` principal com `![Nome](docs/screenshots/<pasta>/ficheiro.ext)`.

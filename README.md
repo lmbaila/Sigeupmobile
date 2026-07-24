@@ -23,17 +23,27 @@ Aplicação móvel (Expo / React Native) para estudantes da **Universidade Pedag
 
 ## Capturas de ecrã
 
-> As imagens abaixo devem ser colocadas em `docs/screenshots/` com estes nomes exactos — assim que estiverem lá, aparecem automaticamente aqui e no GitHub.
+### Versão actual
 
 | Início | Notas | Financeiro |
 |---|---|---|
-| ![Início](docs/screenshots/inicio.png) | ![Notas](docs/screenshots/notas.png) | ![Financeiro](docs/screenshots/financeiro.png) |
+| ![Início](docs/screenshots/new-version/inicio.png) | ![Notas](docs/screenshots/new-version/notas.png) | ![Financeiro](docs/screenshots/new-version/financeiro.png) |
 
 | Mais | Plano Curricular | Perfil | Documentos |
 |---|---|---|---|
-| ![Mais](docs/screenshots/mais.png) | ![Plano Curricular](docs/screenshots/plano-curricular.png) | ![Perfil](docs/screenshots/perfil.png) | ![Documentos](docs/screenshots/documentos.png) |
+| ![Mais](docs/screenshots/new-version/mais.png) | ![Plano Curricular](docs/screenshots/new-version/plano-curricular.png) | ![Perfil](docs/screenshots/new-version/perfil.png) | ![Documentos](docs/screenshots/new-version/documentos.png) |
 
-Ecrãs adicionais (Login, detalhe de notas, detalhe de factura, definições) podem ser acrescentados da mesma forma — basta guardar o `.png` em `docs/screenshots/` e referenciá-lo com `![Nome](docs/screenshots/ficheiro.png)`.
+### Versão antiga (antes da reconstrução)
+
+| Perfil | Notas — anos lectivos | Notas — frequência |
+|---|---|---|
+| ![Perfil (antigo)](docs/screenshots/old-version/perfil.jpg) | ![Notas por ano (antigo)](docs/screenshots/old-version/notas-anos.jpg) | ![Detalhe de notas (antigo)](docs/screenshots/old-version/notas-detalhe.jpg) |
+
+| Notas — exames | Estado vazio |
+|---|---|
+| ![Notas de exame (antigo)](docs/screenshots/old-version/notas-exames.jpg) | ![Sem notas encontradas (antigo)](docs/screenshots/old-version/notas-vazio.jpg) |
+
+Mais ecrãs podem ser acrescentados da mesma forma: guarda o ficheiro em `docs/screenshots/new-version/` ou `docs/screenshots/old-version/` e referencia-o com `![Nome](docs/screenshots/<pasta>/ficheiro.ext)`.
 
 ---
 
